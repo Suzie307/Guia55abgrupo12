@@ -92,6 +92,7 @@
                     </td>
                     <td>
                         <a href="Acciones/delete.jsp?id=${row.Id}&isbn=${row.isbn}&titulo=${row.titulo}&autor=${row.autor}&editorial=${row.editorial}">Eliminar</a>
+                        <a href="Acciones/frmupdate.jsp?id=${row.Id}&isbn=${row.isbn}&titulo=${row.titulo}&autor=${row.autor}&editorial=${row.editorial}">Actualizar</a>
                     </td>
                 </tr>
             </c:forEach>

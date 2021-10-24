@@ -5,7 +5,9 @@
 --%>
 
 <%@page import="java.sql.*"%>
-<%@include file="../Conectar/Connection.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+<%@include file="../Conectar/baseDatos.jsp"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -17,28 +19,15 @@
     <body>
         <h1>Insertar en bd </h1>
         <p>la informacion siguiente:</p>
-        <%
-    String isbn,titulo,autor,editorial,query;
-    
-    isbn=request.getParameter("isbn");
-    titulo=request.getParameter("titulo");
-    autor=request.getParameter("autor");
-    editorial=request.getParameter("editorial");
-    
-    Connection conexion=getConnection();
-    Statement st=conexion.createStatement();
-        query=" insert into libros (isbn,titulo,autor,editorial)";
-        query+="values (";
-        query += "'" + isbn + "',";
-        query += "'" + titulo + "',";
-        query += "'" + autor + "',";
-        query += "'" + editorial + "')";
-    st.execute(query);
-    out.println("<p>Query Ejecutado:"+query+"</p>");
-    out.println("<p>Libro: "+titulo+"con isbn:"+isbn+"</p>");
-    out.println("<p>en la base de datos biblioteca");
-    
-%>
+        <p>isbn:"<%=request.getParameter("isbn")%>"</p>
+        <p>titulo:"<%=request.getParameter("titulo")%>"</p>
+        <p>autor:"<%=request.getParameter("autor")%>"</p>
+        <p>editorial:"<%=request.getParameter("editorial")%>"</p>
+        
+<sql:update dataSource = "${baseDatos}" >
+            insert into libros (isbn,titulo,autor,editorial) values ("<%=request.getParameter("isbn")%>","<%=request.getParameter("titulo")%>","<%=request.getParameter("autor")%>","<%=request.getParameter("editorial")%>")
+</sql:update>
+            <p>exitoso</p>
 <br>
 <a href="../index.jsp">Regresar</a>
 

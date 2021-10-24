@@ -21,7 +21,13 @@
         <form action="delete.jsp" method="get/post" name="Actualizar">
         <table border="0" width="2" cellspacing="1" cellpadding="1">
                 <tbody>
+                       <tr>
+                        
+                        <td>ISBN</td>
+                        <td><input type="text" name="id" value="<%=request.getParameter("id")%>" size="30"</td>
+                    </tr>
                     <tr>
+                        
                         <td>ISBN</td>
                         <td><input type="text" name="isbn" value="<%=request.getParameter("isbn")%>" size="30"</td>
                     </tr>
@@ -50,11 +56,10 @@
  </tr>
  </form>
 <c:set var="Action" scope="session" value='<%=request.getParameter("Action")%>'/>
-${Action}
-<c:if test='${Action=="Eliminar"}'>
+
+<c:if test='${Action!=null}'>
 <sql:update dataSource = "${baseDatos}" >
             DELETE FROM libros WHERE Id ="<%=request.getParameter("id")%>"
-            
 </sql:update>
 <p> El libro se Borro con exito </p>
 </c:if>

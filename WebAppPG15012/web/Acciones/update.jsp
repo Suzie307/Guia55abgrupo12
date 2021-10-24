@@ -6,8 +6,9 @@
 
 
 <%@page import="java.sql.*"%>
-<%@include file="../Conectar/Connection.jsp"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+<%@include file="../Conectar/baseDatos.jsp"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,30 +16,19 @@
         <title>Actualizar</title>
     </head>
     <body>
-        <h1>Actualizar en bd </h1>
+       
+        <h1>Insertar en bd </h1>
         <p>la informacion siguiente:</p>
-        <%
-    int id;
-    String isbn,titulo,autor,editorial,query,action;
-    
-    id=Integer.parseInt(request.getParameter("id"));
-    isbn=request.getParameter("isbn");
-    titulo=request.getParameter("titulo");
-    autor=request.getParameter("autor");
-    editorial=request.getParameter("editorial");
-    action=request.getParameter("action");
-    Connection conexion=getConnection();
-    Statement st=conexion.createStatement();
-        query=" update libros set ";
-        query += "isbn = '" + isbn + "',";
-        query += "titulo = '" + titulo + "',";
-        query += "autor = '" + autor + "',";
-        query += "editorial = '" + editorial + "'";
-        query += "where Id="+id+";"; 
-    st.execute(query);
-     out.println("<p>Query Ejecutado:"+query+"</p>");
-     out.println("<p>Datos Actualizados</p>");
-    %>
+        <p>isbn:"<%=request.getParameter("id")%>"</p>
+        <p>isbn:"<%=request.getParameter("isbn")%>"</p>
+        <p>titulo:"<%=request.getParameter("titulo")%>"</p>
+        <p>autor:"<%=request.getParameter("autor")%>"</p>
+        <p>editorial:"<%=request.getParameter("editorial")%>"</p>
+        
+<sql:update dataSource = "${baseDatos}" >
+            update libros set isbn="<%=request.getParameter("isbn")%>", titulo="<%=request.getParameter("titulo")%>",autor="<%=request.getParameter("autor")%>",editorial="<%=request.getParameter("editorial")%>" where Id="<%=request.getParameter("id")%>"
+</sql:update>
+            <p>exitoso</p>
 <br>
 <a href="../index.jsp">Regresar</a>
 
