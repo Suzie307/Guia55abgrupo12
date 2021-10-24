@@ -6,7 +6,9 @@
 
 <%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@include file="../Conectar/Connection.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+<%@include file="../Conectar/baseDatos.jsp"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +19,7 @@
     <body>
         <h1>Detalles de libro a eliminar</h1>
         <form action="delete.jsp" method="get/post" name="Actualizar">
-        <table><table border="0" width="2" cellspacing="1" cellpadding="1">
+        <table border="0" width="2" cellspacing="1" cellpadding="1">
                 <tbody>
                     <tr>
                         <td>ISBN</td>
@@ -47,24 +49,17 @@
 </td>
  </tr>
  </form>
- <%
-   
-    String isbn,titulo,query,action;
-    action=request.getParameter("Action");
-    isbn=request.getParameter("isbn");
-    titulo=request.getParameter("titulo");
-    if(action!=null){
-    Connection conexion=getConnection();
-    Statement st=conexion.createStatement();
-        query=" delete from libros where isbn =";
-        query += "'" + isbn + "'";
-    st.execute(query);
-    out.println("<p>Query Ejecutado:"+query+"</p>");
-    out.println("<p>Libro: "+titulo+"con isbn:"+isbn+"a sido borrado de la </p>");
-    out.println("<p>datos biblioteca");
-    }
+<c:set var="Action" scope="session" value='<%=request.getParameter("Action")%>'/>
+${Action}
+<c:if test='${Action=="Eliminar"}'>
+<sql:update dataSource = "${baseDatos}" >
+            DELETE FROM libros WHERE Id ="<%=request.getParameter("id")%>"
+            
+</sql:update>
+<p> El libro se Borro con exito </p>
+</c:if>
     
- %>
+
  <br>
  <a href="../index.jsp">Regresar</a>
     </body>

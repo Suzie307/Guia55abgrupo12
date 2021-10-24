@@ -6,9 +6,13 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.io.*,java.util.*,java.sql.*"%>
-<%@include file="Conectar/Connection.jsp" %>
-<%@taglib uri= "http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
+<%@include file="Conectar/baseDatos.jsp" %>
+
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +25,7 @@
     <body>
 
   
-    <form action="CRUD/insert.jsp" method="Post" name="Actualizar">
+    <form action="Acciones/insert.jsp" method="Post" name="Actualizar">
         <table><table border="0" width="2" cellspacing="1" cellpadding="1">
                 <tbody>
                     <tr>
@@ -54,47 +58,44 @@
     <body>
         <br><br>
 </table>
-<%
-Connection conexion = null;
-Statement st=null;
-ResultSet rs=null;
-conexion=getConnection();
-  if(conexion != null){
-    out.println("Database Connected.");
-    } else {
-    out.println("Database Connect Failed.");
-    }
-st=conexion.createStatement();
-rs=st.executeQuery("Select * from libros");
+<sql:query dataSource = "${baseDatos}" var = "result">
+            SELECT * from libros;
+        </sql:query>
 
-out.println("<table border=\"1\"><tr><td>Num.</td><td>ISBN</td><td>Titulo</td><td>Autor</td><td>Editorial</td><td>Accion</td></tr>");
-      int i=1;
-      while (rs.next())
-      {
-         int id=rs.getInt("Id");
-         String isbn=rs.getString("isbn");
-         String titulo=rs.getString("titulo");
-         String autor=rs.getString("autor");
-         String editorial=rs.getString("editorial");
-         
-         
-         out.println("<tr>");
-         out.println("<td>"+ i +"</td>");
-         out.println("<td>"+isbn+"</td>");
-         out.println("<td>"+titulo+"</td>");
-         out.println("<td>"+autor+"</td>");
-         out.println("<td>"+editorial+"</td>");
-         
-         
-         out.println("<td><a href=\"CRUD/delete.jsp?isbn="+isbn+"&titulo="+titulo+"&autor="+autor+"&editorial="+editorial+"\">Eliminar</a>"+" , "+
-         "<a href=\"CRUD/frmupdate.jsp?isbn="+isbn+"&titulo="+titulo+"&autor="+autor+"&editorial="+editorial+"&id="+id+"\">Actualizar</a></td>");
-         
-         out.println("</tr>");
-         i++;
-      }
-      out.println("</table>");
+        <table border = "1" width = "50%">
+            <tr>
+                <th>ID</th>
+                <th>ISBN</th>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Editorial</th>
+                <th>Accion</th>
+            </tr>
 
-%>
+            <c:forEach var = "row" items = "${result.rows}">
+                <tr>
+                    <td>
+                        <c:out value = "${row.Id}"/>
+                        
+                    </td>
+                    <td>
+                        <c:out value = "${row.isbn}"/>
+                    </td>
+                    <td>
+                        <c:out value = "${row.titulo}"/>
+                    </td>
+                    <td>
+                        <c:out value = "${row.autor}"/>
+                    </td>
+                    <td>
+                        <c:out value = "${row.editorial}"/>
+                    </td>
+                    <td>
+                        <a href="Acciones/delete.jsp?id=${row.Id}&isbn=${row.isbn}&titulo=${row.titulo}&autor=${row.autor}&editorial=${row.editorial}">Eliminar</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
     </body>
 </html>
 
